@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  color: rgb(0, 0, 0);
+  background: rgb(255, 255, 255);
+}
+
+.square {
+    border : 1px solid black;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: bottom;
+}
