@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import { testConsole } from "./logic.js";
 const array = [{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }];
 
 export default function IndexPage() {
@@ -13,13 +13,17 @@ export default function IndexPage() {
     }, []);
 
     console.log (randomArray)
-    return (
-        <div>
+    return (<>
+            <div>
             {randomArray.map((s, id) => (
                 <div key={id}>
                     <h2>{s.name}</h2>
                 </div>
             ))}
         </div>
+        <button onClick={()=>{testConsole()}}>
+            test
+        </button>
+    </>
     );
 }
