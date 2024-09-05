@@ -108,6 +108,12 @@ export default function Game() {
     <div>
       {gameStatusString}
     </div>
+
+    <div>
+        <Link href="/">
+          メインに戻る
+        </Link>
+      </div>
   </>
   );
 }
