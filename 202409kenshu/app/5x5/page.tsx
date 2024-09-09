@@ -129,11 +129,11 @@ export default function Game() {
           ))}
           <div></div>
           {randomizeArrayElement.slice(15, 20).map((value, index) => (
-            <Square value={value} onSquareClick={() => { handleClick(value) }} key={"3-" + index} />
+            <Square value={value} onSquareClick={() => { handleClick(value) }} key={"4-" + index} />
           ))}
           <div></div>
           {randomizeArrayElement.slice(20, 25).map((value, index) => (
-            <Square value={value} onSquareClick={() => { handleClick(value) }} key={"3-" + index} />
+            <Square value={value} onSquareClick={() => { handleClick(value) }} key={"5-" + index} />
           ))}
         </div>
         <div>
