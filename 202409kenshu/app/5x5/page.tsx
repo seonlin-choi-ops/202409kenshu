@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import "./style.css";
+import { Arapey } from "next/font/google";
 
 //三目並べと一緒（多分）
 function Square({ value, onSquareClick }: { value: number, onSquareClick: Function }) {
@@ -28,66 +29,90 @@ export default function Game() {
   const [time, setTime] = useState(0);
   //タイマー動いてるかどうか
   const [isRunning, setIsRunning] = useState(false);
-  //これ勉強して、useRefってなんでしょう。
-  const intervalRef = useRef<any>(null);
+  //タイマーをストップする際に使用
+  const intervalRef = useRef<any>(null); //数値が変わるたびにレンダーされないようにする。
 
-  //defaultArray (1-25までの配列)を順番ランダムの配列に変更する
-  //const randomArray = Array.from(randomizeArrayElement);
+  //defaultArrayをランダム化し、useStateに格納
+  function randomize(targetArray: number[]) {
+    for (let i = (targetArray.length - 1); 0 < i; i--) {
+      let r = Math.floor(Math.random() * (i + 1));
+      let tmp = targetArray[i];
+      targetArray[i] = targetArray[r];
+      targetArray[r] = tmp;
+    }
+    return targetArray;
+  }
 
   //なぜあえてuesEffectの中にいれてるのか？
+  //defaultArray (1-25までの配列)を順番ランダムの配列に変更する
   useEffect(() => {
-    //中身埋めて
-    /************************************************************************************/
-    /************************************************************************************/
-    /************************************************************************************/
-    /************************************************************************************/
-    /************************************************************************************/
-    /************************************************************************************/
+    const randomfin: number[] = randomize(defaultArray);
+    setRandomizeArrayElement(randomfin);
   }, []);
 
-  //Squareがクリックされたときの動き
-  function handleClick(clickedValue: number) {
+
+    //Squareがクリックされたときの動き
     //今押すべき番号を確認、
     //押された番号の確認、
     //上記2つの数字を比べて、どうにか処理する。
-    //if(random[i]順番に押されているかを比較){
-    //押されたボタンの表示を消す
-    //}else{
-    //ボタンを押せない処理
-    //}else if(最初と最後のボタンが押されたら){
-    //gameControlの関数を呼ぶ
-    //}
-    //
-    /************************************************************************************/
-    /************************************************************************************/
-    /************************************************************************************/
-    /************************************************************************************/
-    /************************************************************************************/
+    //配列の中身のクリックした部分を変更。
+    //1,random配列indexからクリックした部分の位置を探す
+    //2.クリックした部分を空白に変える
+    //3.変えたやつをセットする。
+    
+  function handleClick(clickedValue: number) {
+
+    if (currentNum === clickedValue) {
+
+      const tempNo = randomizeArrayElement.slice();
+      //const tempNo = randomizeArrayElement;
+
+      const place: number = tempNo.indexOf(clickedValue);
+
+      tempNo[place] = null;
+      setCurrentNum(clickedValue + 1);
+
+      setRandomizeArrayElement(tempNo)
+
+      //タイマー処理
+      if(clickedValue === 1){
+        // gameControl();
+        handleStart();
+        setGameStatusString("Playing");
+      }else if(clickedValue === 25){
+        //gameControl();
+        handlePause();
+        setGameStatusString("Game Over");
+      }
+
+    } else {
+      return;
+    }
+    
   }
 
   //今ゲーム中なのか、ゲーム中じゃないかの判断。
   //handleClick関数の中で呼ばれる想定、だったけどほかの良い手があればそっちでやっても良し
-  function gameControl() {
-    //
-    /************************************************************************************/
-    /************************************************************************************/
-    /************************************************************************************/
-    /************************************************************************************/
-    /************************************************************************************/
-    /************************************************************************************/
-  }
+
+  // function gameControl() {
+
+  //   handleStart();
+  //   handlePause();
+  // }
 
   //タイマースタート関数
+  //setInterval()、タイマーの動作が始まる
   function handleStart() {
     setIsRunning(true);
     intervalRef.current = setInterval(() => {
-      setTime(prevTime => prevTime + 10);
+      setTime(prevTime => prevTime + 10); //10ミリごとに表示
     }, 10);
   }
 
   //タイマーポーズ関数
+  //clearInterval()により、setInterval()の動作を取り消す
   function handlePause() {
-    clearInterval(intervalRef.current);
+    clearInterval(intervalRef.current); //()内はsetInterval()の返り値
     setIsRunning(false);
   }
 
@@ -110,7 +135,7 @@ export default function Game() {
       <p>{hours}:{minutes}:{seconds}:{milliseconds}</p>
     </div>
     <div>
-      {randomizeArrayElement.slice(0, 5).map((value, index) => (
+      {randomizeArrayElement.slice(0, 5).map((value, index) => ( //slice(開始位置,終了位置(未満))
         <Square value={value} onSquareClick={() => { handleClick(value) }} key={"1-" + index} />
       ))}
       <div></div>
@@ -135,10 +160,10 @@ export default function Game() {
     </div>
 
     <div>
-        <Link href="/">
-          メインに戻る
-        </Link>
-      </div>
+      <Link href="/">
+        メインに戻る
+      </Link>
+    </div>
   </>
   );
 }
